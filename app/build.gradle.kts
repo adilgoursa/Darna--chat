@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.adil.chatapp"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.adil.chatapp"
-        minSdk = 24
-        targetSdk = 34
+        targetSdk = 33
+        targetSdk = 33
         versionCode = 13
         versionName = "1.1"
     }
