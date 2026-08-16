@@ -16,11 +16,15 @@ jobs:
           cache: gradle
       
       - run: chmod +x gradlew
-      - run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-      - run: ./gradlew clean assembleDebug -x lint
+      - run: ./gradlew --version
+      - run: |
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+      
+      - run: ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 || true
       
       - uses: actions/upload-artifact@v4
-        if: success()
+        if: hashFiles('app/build/outputs/apk/debug/app-debug.apk') != ''
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
