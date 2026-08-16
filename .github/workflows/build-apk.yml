@@ -1,0 +1,49 @@
+name: Build Release APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      # Caching disabled on purpose: GitHub's cache backend logged repeated
+      # "Cache service responded with 400" failures on earlier runs, and a
+      # partially-saved/corrupted cache is a plausible way stale build
+      # outputs (e.g. an old app icon) could leak into an otherwise-correct
+      # build. A clean ~/.gradle every run costs a bit of time but removes
+      # that whole class of flakiness.
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: "8.7"
+          cache-disabled: true
+
+      # A "release" build (code shrinking/obfuscation, isDebuggable=false)
+      # signed with our own committed keystore — no Play Store account
+      # needed, but a cleaner build than "debug" that antivirus scanners
+      # are somewhat less likely to flag as a generic/dev artifact.
+      # --no-build-cache: forces every task to execute fresh, so no cached
+      # task output (local or remote) can ever serve stale resources.
+      - name: Clean build directory
+        run: rm -rf app/build
+
+      - name: Build release APK
+        run: gradle assembleRelease --no-daemon --no-build-cache --rerun-tasks
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: darna-release-apk
+          path: app/build/outputs/apk/release/*.apk

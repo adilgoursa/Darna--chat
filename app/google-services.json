@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "517061601185",
+    "firebase_url": "https://darna-chat-default-rtdb.firebaseio.com",
+    "project_id": "darna-chat",
+    "storage_bucket": "darna-chat.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517061601185:android:2e25c54ab9fe8699f8cde0",
+        "android_client_info": {
+          "package_name": "com.adil.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNzIxJfbo_QD1ii_lAVezkj1SPs1kbShk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
